@@ -52,6 +52,7 @@ Hver række er en øvelse. Kolonnerne er:
 - **bane**: `servefelt`, `små baner`, `halv bane`, `¾-bane` eller `fuld bane`. Tom: følger niveauet.
 - **bold**: `skum`, `rød`, `orange`, `grøn` eller `gul`. Tom: den bold, der er valgt i indstillingerne. Små baner kan kun bruges med rød bold eller skumbold.
 - **blandede niveauer**: Hvordan øvelsen gennemføres, når holdet har stærkere og mindre stærke spillere.
+- **kampsituation**: `ja` eller `nej`. Ja gør øvelsen til en kampsituation i programmet for Turnering. Tom: følger kategorien (Spillemønster, Taktisk situation og Point under pres er altid kampsituationer).
 - **lettere** og **sværere**: Øvelsens egne punkter, adskilt af semikolon. Vises før standardpunkterne.
 - **familietype**: 1-10, hvilken type i familiemenuen øvelsen hører til (1 Leg og bevægelse, 2 Fangeleg eller reaktion, 3 Kast og grib, 4 Trille- og boldkontrol, 5 Balance med ketcher, 6 Første slag til mål, 7 Barn-voksen-samarbejde, 8 Lille rallyaktivitet, 9 Tennisleg eller stafet, 10 Fælles afslutningschallenge).
 - **barnets opgave** og **den voksnes rolle**: Tekster til familiekortene.
@@ -94,3 +95,7 @@ Under **Statistik → Denne enhed** kan du **Eksportere data** til en fil og **I
 Hvis appen skriver, at regnearket ikke kan hentes, kan du i stedet hente arket som CSV (**Filer → Download → Kommaseparerede værdier**), omdøbe filen til `ovelser.csv` og uploade den til GitHub ved siden af `index.html`. Lad `ovelsesark` i `config.json` være tom. Så bruger appen filen i stedet.
 
 Skrifttyperne Barlow og Barlow Condensed er under SIL Open Font License (se `fonts/LICENSE-OFL.txt`).
+
+
+## Version 15
+Appen har to niveauer: Familietennis og Turnering. Programmet for Turnering består af opvarmning, boldføling, to kampsituationer og et fælles pointspil. Specialslag tilføjes med »Tilføj øvelse«. Eksport og import af data findes under fanen Gemte.

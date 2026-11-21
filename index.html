@@ -63,7 +63,7 @@ a{color:var(--court)}
 .top-in{max-width:1160px;margin:0 auto;height:100%;display:flex;align-items:center;gap:12px;padding:0 16px}
 .brand{display:flex;align-items:center;gap:10px;font:700 21px/1 var(--display);letter-spacing:.01em}
 .brand svg{width:30px;height:22px;flex:none}
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}
 .nav button{position:relative;background:none;border:0;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 12px/1.1 var(--text);color:var(--muted)}
 .nav button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav button[aria-current="page"]{color:var(--court)}
@@ -339,7 +339,6 @@ select{width:100%;min-height:46px;padding:0 12px;border-radius:10px;border:1px s
         <button data-view="program" aria-current="page"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h5M7 17h8"/></svg><span>Program</span></button>
         <button data-view="library"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>Øvelser</span></button>
         <button data-view="saved"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Gemte</span></button>
-        <button data-view="stats"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Statistik</span></button>
       </nav>
     </div>
   </header>
@@ -388,7 +387,7 @@ const LS={
 };
 
 /* ---------- Grunddata ---------- */
-const LEVELS=[['family','Familietennis'],['beginner','Begynder'],['advanced','Øvet'],['tournament','Turnering']];
+const LEVELS=[['family','Familietennis'],['tournament','Turnering']];
 const AGES=['U8','U10','U10/12','U14/16'];
 const THEMES=['Serv og retur','Bevægelse','Teknik','Taktik','Netspil'];
 const DURS=[60];
@@ -400,7 +399,7 @@ const BALL_INFO={foam:'Skumbold: blød og langsom med lavt hop. Den giver god ti
 const COURT_INFO={small:'Små baner: brug servefelterne som minitennisbaner, eller spil på tværs af banen med reb eller lavt net. Der er plads til flere par pr. bane, og ventetiden bliver kort.',large:'Store baner: brug hele banen, eller lav en ¾-bane med kegler som baglinje. Der er plads til længere bolde, retning og bevægelse.'};
 const FAMILY_COURT='Familietennis spilles altid på minitennisbaner: servefelterne eller små baner på tværs af banen med reb eller lavt net. Brug skumbold eller rød bold.';
 const NO_BALL=['X-drill uden ketcher','Shuttles uden ketcher','Split-step stafetten','X-drill','Shuttles','Rebstigeøvelser','5-lines warm-up','Speed, agility and reaction','Linje-fange','Spejlbevægelse','Fire hjørner med recovery','To plus én','Dagens læring','Effort rating','Træningsark','Serveskygge og første skridt','Returreaktion med farvesignal','Skygge-slag i rytme','Spejl og fang','Banediagram','Progressionstrappe','Forhindringsbane uden ketcher','Reaktionsstart med farver','Split-step duel','Siddende velkomstrunde','Navnerunde med bevægelse','Liggestafet','Snup keglen','Farve-fangeleg','Kegle-cirkel fangeleg','Løbestafet','Død og begravet','Velkomst','Fem stjerne','Krokodillefange'];
-const LEVEL_BASE={family:1,beginner:1,advanced:2,tournament:3};
+const LEVEL_BASE={family:1,tournament:3};
 const AGE_ADJ={'U8':-1,'U10':0,'U10/12':0,'U14/16':1};
 
 const structures={
@@ -1017,7 +1016,7 @@ applyOverrides();
 
 /* ---------- Øvelsesbank fra Google Sheets (kun i den installerbare udgave) ---------- */
 const SHEET_ON=!!window.TP_PWA;
-const SHEET_COLS={court:['bane'],ballCol:['bold'],mixed:['blandede niveauer'],vFamily:['familie'],vBeginner:['begynder'],vLight:['let øvet','let oevet'],vAdvanced:['øvet','oevet'],vTournament:['turnering'],feedTempo:['fodringstempo'],easier:['lettere'],harder:['sværere','svaerere'],famType:['familietype'],childTask:['barnets opgave'],adultRole:['den voksnes rolle'],duration:['varighed'],variations:['variationer'],intro:['instruktion'],buildUp:['opbygning'],demo:['vis det'],techTip:['tekniktip'],position:['placering'],special:['specialslag'],feed:['igangsætning','igangsaetning'],warmType:['opvarmningstype'],id:['id'],name:['navn','name'],cat:['kategori','kategorier'],lvl:['sværhedsgrad','svaerhedsgrad','niveau'],basket:['kurveøvelse','kurveovelse','kurv'],active:['aktiv'],setup:['opstilling','sådan gør i','beskrivelse'],goal:['formål','formaal'],coach:['trænerfokus','traenerfokus'],source:['kilde']};
+const SHEET_COLS={kampCol:['kampsituation'],court:['bane'],ballCol:['bold'],mixed:['blandede niveauer'],vFamily:['familie'],vBeginner:['begynder'],vLight:['let øvet','let oevet'],vAdvanced:['øvet','oevet'],vTournament:['turnering'],feedTempo:['fodringstempo'],easier:['lettere'],harder:['sværere','svaerere'],famType:['familietype'],childTask:['barnets opgave'],adultRole:['den voksnes rolle'],duration:['varighed'],variations:['variationer'],intro:['instruktion'],buildUp:['opbygning'],demo:['vis det'],techTip:['tekniktip'],position:['placering'],special:['specialslag'],feed:['igangsætning','igangsaetning'],warmType:['opvarmningstype'],id:['id'],name:['navn','name'],cat:['kategori','kategorier'],lvl:['sværhedsgrad','svaerhedsgrad','niveau'],basket:['kurveøvelse','kurveovelse','kurv'],active:['aktiv'],setup:['opstilling','sådan gør i','beskrivelse'],goal:['formål','formaal'],coach:['trænerfokus','traenerfokus'],source:['kilde']};
 let sheetState=LS.get('tp.sheet',null);
 const sheetReport={applied:false,rows:0,added:0,changed:0,off:0,errors:[],source:'',at:0,fetchError:''};
 let sheetPending=false,sheetCfgUrl='',sheetBusy=false;
@@ -1113,6 +1112,7 @@ function applySheetText(text){
     const blV=pickVal('ballCol',['skum','rød','orange','grøn','gul'],'Bold');if(blV)ex.ball={'skum':'foam','rød':'red','orange':'orange','grøn':'green','gul':'yellow'}[blV];
     if(ex.court==='små baner'&&ex.ball&&ex.ball!=='foam'&&ex.ball!=='red'){rep.errors.push({line,msg:'Små baner kan kun bruges med rød bold eller skumbold. Rød bold bruges.'});ex.ball='red'}
     if(get('mixed'))ex.mixed=get('mixed');
+    {const kv=yn(get('kampCol'),'Kampsituation');if(kv!==null)ex.kamp=kv}
     if(get('techTip'))ex.techTip=get('techTip');if(get('position'))ex.position=get('position');if(spV)ex.special=spV;if(fdV)ex.feed=fdV;if(wtV)ex.warmType=wtV;
     if(cats)setCats(ex,cats);
     ex.baseLvl=lvl!=null?lvl:(ex0?ex.baseLvl:0);
@@ -1193,9 +1193,9 @@ function renderSheetBox(){
 }
 function csvCell(v){v=v==null?'':String(v);return /[",;\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
 function exercisesCsv(){
-  const head=['id','navn','kategori','kurveøvelse','aktiv','opstilling','formål','trænerfokus','kilde','tekniktip','placering','specialslag','igangsætning','opvarmningstype','fodringstempo','familie','begynder','øvet','turnering','bane','bold','blandede niveauer','lettere','sværere','familietype','barnets opgave','den voksnes rolle','varighed','variationer','instruktion','opbygning','vis det','trin 1','trin 2','trin 3','trin 4','trin 5'];
+  const head=['id','navn','kategori','kurveøvelse','aktiv','opstilling','formål','trænerfokus','kilde','tekniktip','placering','specialslag','igangsætning','opvarmningstype','fodringstempo','familie','begynder','øvet','turnering','bane','bold','blandede niveauer','kampsituation','lettere','sværere','familietype','barnets opgave','den voksnes rolle','varighed','variationer','instruktion','opbygning','vis det','trin 1','trin 2','trin 3','trin 4','trin 5'];
   const lines=[head.join(',')];
-  ALL.forEach(e=>{const st=stepsOf(e)||[];lines.push([e.id,e.name,e.cats.join('; '),autoBasket(e)?'ja':'nej',e.sheetOff?'nej':'ja',e.setup,e.goal,e.coach,e.source,e.techTip||'',e.position||'',e.special||'',e.feed||'',e.warmType||'',e.feedTempo||'',...['family','beginner','advanced','tournament'].map(k=>e.variants&&e.variants[k]||''),e.court||'',e.ball?({foam:'skum',red:'rød',orange:'orange',green:'grøn',yellow:'gul'})[e.ball]:'',e.mixed||'',(e.easier||[]).join('; '),(e.harder||[]).join('; '),(e.famTypes||[]).join(', '),e.childTask||'',e.adultRole||'',e.duration||'',(e.variations||[]).join('; '),e.intro||'',(e.buildUp||[]).join(' → '),e.demoPoints||'',st[0],st[1],st[2],st[3],st[4]].map(csvCell).join(','))});
+  ALL.forEach(e=>{const st=stepsOf(e)||[];lines.push([e.id,e.name,e.cats.join('; '),autoBasket(e)?'ja':'nej',e.sheetOff?'nej':'ja',e.setup,e.goal,e.coach,e.source,e.techTip||'',e.position||'',e.special||'',e.feed||'',e.warmType||'',e.feedTempo||'',...['family','beginner','advanced','tournament'].map(k=>e.variants&&e.variants[k]||''),e.court||'',e.ball?({foam:'skum',red:'rød',orange:'orange',green:'grøn',yellow:'gul'})[e.ball]:'',e.mixed||'',e.kamp===true?'ja':e.kamp===false?'nej':'',(e.easier||[]).join('; '),(e.harder||[]).join('; '),(e.famTypes||[]).join(', '),e.childTask||'',e.adultRole||'',e.duration||'',(e.variations||[]).join('; '),e.intro||'',(e.buildUp||[]).join(' → '),e.demoPoints||'',st[0],st[1],st[2],st[3],st[4]].map(csvCell).join(','))});
   return '\uFEFF'+lines.join('\r\n')+'\r\n';
 }
 window.__tpExercisesCsv=exercisesCsv;
@@ -1223,7 +1223,7 @@ function applyImport(){
 
 /* ---------- Tilstand ---------- */
 let settings=Object.assign({level:'beginner',age:'U10/12',theme:'none',duration:60},LS.get('tp.settings',{}));
-if(settings.level==='development'||settings.level==='light')settings.level='advanced';
+if(settings.level!=='family'&&settings.level!=='tournament'){settings.level='tournament';settings.ball='yellow'}
 if(!structures[settings.level])settings.level='beginner';
 if(settings.age==='Voksen')settings.age='U14/16';
 if(!AGES.includes(settings.age))settings.age='U10/12';
@@ -1250,8 +1250,8 @@ let stats=LS.get('tp.stats',null);
 if(!stats){stats=LS.get('tennisStats',{})||{}} // overtag statistik fra første version
 let saved=LS.get('tp.saved',[]);
 let program=LS.get('tp.program',null);
-if(program&&(program.level==='development'||program.level==='light'))program.level='advanced';
-saved.forEach(x=>{if(x.level==='development'||x.level==='light')x.level='advanced';if(x.settings&&(x.settings.level==='development'||x.settings.level==='light'))x.settings.level='advanced';if(x.settings)x.settings.duration=+x.settings.duration>=90?90:60});
+if(program&&program.level&&program.level!=='family')program.level='tournament';
+saved.forEach(x=>{if(x.level&&x.level!=='family')x.level='tournament';if(x.settings&&x.settings.level&&x.settings.level!=='family')x.settings.level='tournament';if(x.settings)x.settings.duration=+x.settings.duration>=90?90:60});
 Object.values(stats).forEach(st=>{if(st&&st.contexts)Object.keys(st.contexts).forEach(k=>{const old=k.startsWith('development|')?12:k.startsWith('light|')?6:0;if(old){const nk='advanced|'+k.slice(old);st.contexts[nk]=(st.contexts[nk]||0)+st.contexts[k];delete st.contexts[k]}})});
 let session=LS.get('tp.session',null);
 let view=LS.get('tp.view','program');
@@ -1279,7 +1279,7 @@ const baseStructureFor=l=>{l=l||settings.level;if(l==='family')return FAM_ORDER.
 const structureFor=l=>{const lv=l||settings.level,b=baseStructureFor(l);if(!genActive&&lv!=='family'&&program&&program.level===lv&&(program.mode||'standard')===curMode()&&Array.isArray(program.extras))program.extras.slice().sort((a,c)=>a.pos-c.pos).forEach(x=>b.splice(Math.min(x.pos,b.length),0,[x.name,x.mins]));return b};
 function target(){return Math.max(1,Math.min(BALL_CAP[settings.ball]||4,LEVEL_BASE[settings.level]||1))}
 function blockMinutes(){const b=structureFor(),m=settings.level==='family'?minutesFor(b,+settings.duration):b.map(x=>x[1]),adj=(program&&program.adjust)||[];return m.map((x,i)=>Math.max(0,x+(adj[i]||0)))}
-const DONOR_RX=/^(Slagtræning|Specialslag:|Pointspil \d|Pointspil$|Spilsituation|Spillege|Hånd-øje)/;
+const DONOR_RX=/^(Kampsituation|Slagtræning|Specialslag:|Pointspil \d|Pointspil$|Spilsituation|Spillege|Hånd-øje)/;
 function adjustCurrent(delta){
   if(!session)return;const b=structureFor(),m=blockMinutes(),i=curIdx();if(i>=b.length)return;
   program.adjust=program.adjust||[];
@@ -1338,7 +1338,8 @@ function poolFor(cat){
   if(fm){const n=+fm[1];let p=ALL.filter(x=>(x.famTypes||[]).includes(n)&&!x.off&&!(x.excl||[]).includes('family'));if(!p.length)p=ALL.filter(x=>(x.famTypes||[]).includes(n));const th=settings.theme;if(th!=='none'){const f=p.filter(x=>themeMatch(x,th));if(f.length)p=f}return p}
   if(stIdx(cat))return stationPoolFor(cat);
   if(cat==='Velkomst'&&INDEX['velkomst'])return [INDEX['velkomst']];
-  if(cat.startsWith('Specialslag:')){const k=cat.slice(13),rx=SPECIAL_RX[k],lv=settings.level;let p=ALL.filter(x=>!x.off&&!NO_BALL.includes(x.name)&&(x.special===k||(rx&&rx.test((x.name+' '+x.setup).toLowerCase())))&&!x.cats.every(c=>c.startsWith('Tema:')||c.startsWith('Opvarmning')||c==='Velkomst'));return p}
+  if(cat.startsWith('Kampsituation')){let p=kampPool();if(hasBasket()){const f=p.filter(isBasket);if(f.length>=3)p=[...p,...f]}else{const f=p.filter(x=>!isBasket(x));if(f.length)p=f}return p}
+  if(cat.startsWith('Specialslag:')){const k=cat.slice(13),rx=({stopbold:/stopbold|stikbold/,smash:/smash/})[k]||SPECIAL_RX[k],lv=settings.level;let p=ALL.filter(x=>!x.off&&!NO_BALL.includes(x.name)&&(x.special===k||(rx&&rx.test((x.name+' '+x.setup).toLowerCase())))&&!x.cats.every(c=>c.startsWith('Tema:')||c.startsWith('Opvarmning')||c==='Velkomst'));return p}
   if(isPointN(cat)){let p=[];blockCats(cat).forEach(c=>levelPool(c).forEach(x=>{if(!p.includes(x))p.push(x)}));const nb=p.filter(x=>!isBasket(x)&&!NO_BALL.includes(x.name));if(nb.length)p=nb;
     if(cat==='Pointspil 1'&&+settings.duration===90){const sr=SR_POINT.map(byName).filter(x=>x&&!x.off);if(sr.length)return sr}
     return p}
@@ -1394,31 +1395,24 @@ function ageAdjustment(){
 const NEW_MIN={45:{v:2,s:20,h:0,p:11,e:2},60:{v:3,s:30,h:0,p:15,e:2},75:{v:3,s:30,h:15,p:15,e:2},90:{bl:{v:3,s:40,h:20,p:15,e:2},ot:{v:3,s:30,h:20,p:25,e:2}},120:{bl:{v:5,s:50,h:20,p:30,e:5},ot:{v:5,s:40,h:20,p:40,e:5}}};
 function warmBlocks(dur,lv){lv=lv||settings.level;return dur===90?[['Opvarmning: bevægelse',3],['Opvarmning: bevægelse 2',3],['Opvarmning: ketcher og bold',lv==='tournament'?4:6]]:[['Opvarmning: bevægelse',5],['Opvarmning: ketcher og bold',5]]}
 function pointsStructure(level,dur){
-  const w=warmBlocks(dur,level),V=['Velkomst',3],T=level==='tournament';
-  if(dur===90)return T?[V,...w,['Pointspil 1',15],['Pointspil 2',15],['Hård bevægelse',20],['Pointspil 3',15],['Fælles pointspil',10],['Evaluering',2]]
-    :[V,...w,['Pointspil 1',10],['Pointspil 2',10],['Hård bevægelse',10],['Pointspil 3',10],['Pointspil 4',10],['Pointspil 5',10],['Fælles pointspil',10],['Evaluering',5]];
-  return T?[V,...w,['Pointspil 1',15],['Pointspil 2',15],['Fælles pointspil',15],['Evaluering',2]]
-    :[V,...w,['Pointspil 1',10],['Pointspil 2',10],['Pointspil 3',10],['Pointspil 4',10],['Fælles pointspil',5],['Evaluering',2]];
+  return [...warmBlocks(60,'tournament'),['Pointspil 1',15],['Pointspil 2',15],['Fælles pointspil',20]];
 }
 const isPointN=b=>/^Pointspil \d+$/.test(b);
 const POINT_CATS={beginner:['Pointspil','Tennislege'],advanced:['Pointspil'],tournament:['Pointspil','Point under pres']};
 const SR_POINT=['Server afgør på maks. 5 slag','Tre fejlreturer','Kun andenserv og point ved nettet','Serv og to feeds','Serv fra servelinjen, retur fra baglinjen'];
 function newStructure(level,dur){
-  const n90=dur===90,w=warmBlocks(dur,level),V=['Velkomst',3];
-  if(level==='beginner')return n90?[V,...w,['Hånd-øje',10],['Slagtræning 1',10],['Slagtræning 3',10],['Hård bevægelse',10],['Slagtræning 2',10],['Spillege',10],['Fælles pointspil',10],['Evaluering',5]]
-    :[V,...w,['Hånd-øje',10],['Slagtræning 1',10],['Slagtræning 2',10],['Spillege',10],['Fælles pointspil',5],['Evaluering',2]];
-  if(level==='advanced')return n90?[V,...w,['Slagtræning 1',10],['Slagtræning 3',10],['Hård bevægelse',10],['Slagtræning 2',10],['Spilsituation',10],['Pointspil',10],['Fælles pointspil',10],['Evaluering',5]]
-    :[V,...w,['Slagtræning 1',10],['Slagtræning 2',10],['Spilsituation',10],['Pointspil',10],['Fælles pointspil',5],['Evaluering',2]];
-  return n90?[V,...w,['Slagtræning 1',15],['Hård bevægelse',20],['Slagtræning 2',15],['Fælles pointspil',25],['Evaluering',2]]
-    :[V,...w,['Slagtræning 1',15],['Slagtræning 2',15],['Fælles pointspil',15],['Evaluering',2]];
+  return [...warmBlocks(60,'tournament'),['Kampsituation 1',15],['Kampsituation 2',15],['Fælles pointspil',20]];
 }
+const KAMP_CATS=['Spillemønster','Taktisk situation','Point under pres'];
+function kampPool(){const p=kampBase(),strong=p.filter(x=>/point|game|tiebreak|score|match/.test((x.name+' '+x.setup+' '+(stepsOf(x)||[]).join(' ')).toLowerCase()));return [...p,...strong,...strong]}
+function kampBase(){return ALL.filter(x=>!x.off&&!NO_BALL.includes(x.name)&&x.kamp!==false&&(x.kamp===true||x.cats.some(c=>KAMP_CATS.includes(c))||(x.cats.some(c=>c==='Spilsituation'||c==='Pointspil')&&/point/.test((x.setup+' '+(stepsOf(x)||[]).join(' ')).toLowerCase()))))}
 const EVAL_POOL=['Evaluering','Afrunding','Challenge & afrunding'];
 const BLOCK_POOLS={
   beginner:{'Slagtræning 1':['Dagens færdighed'],'Slagtræning 2':['Spilsituation','Rally','Dagens færdighed'],'Slagtræning 3':['Dagens færdighed','Rally','Boldkontrol'],'Spillege':['Tennislege','Pointspil'],'Pointspil':['Pointspil'],'Spilsituation':['Spilsituation'],'Evaluering':EVAL_POOL},
   advanced:{'Slagtræning 1':['Rally & kontrol','Dagens tema'],'Slagtræning 2':['Spilsituation','Dagens tema'],'Slagtræning 3':['Rally & kontrol','Slagkvalitet'],'Spilsituation':['Spilsituation','Taktisk situation'],'Pointspil':['Pointspil'],'Spillege':['Tennislege','Pointspil'],'Evaluering':EVAL_POOL},
   tournament:{'Slagtræning 1':['Slagkvalitet','Dagens tema'],'Slagtræning 2':['Spillemønster','Taktisk situation'],'Slagtræning 3':['Slagkvalitet'],'Spilsituation':['Taktisk situation'],'Pointspil':['Pointspil','Point under pres'],'Spillege':['Pointspil'],'Evaluering':EVAL_POOL}
 };
-function blockCats(b){if(b==='Opvarmning: bevægelse 2')return ['Opvarmning: bevægelse'];if(isPointN(b))return POINT_CATS[settings.level]||['Pointspil'];if(stIdx(b))return stationDef(b).cats(settings.level);const m=BLOCK_POOLS[settings.level];return (m&&m[b])||[b]}
+function blockCats(b){if(b==='Opvarmning: bevægelse 2')return ['Opvarmning: bevægelse'];if(b.startsWith('Kampsituation'))return KAMP_CATS.concat(['Spilsituation','Pointspil']);if(isPointN(b))return POINT_CATS[settings.level]||['Pointspil'];if(stIdx(b))return stationDef(b).cats(settings.level);const m=BLOCK_POOLS[settings.level];return (m&&m[b])||[b]}
 function blockHas(ex,b){const f=/^Familie (\d+)$/.exec(b);if(f)return (ex.famTypes||[]).includes(+f[1]);return blockCats(b).some(c=>ex.cats.includes(c))}
 const BLOCK_LABEL={'Opvarmning: bevægelse':'Opvarmning: løb og bevægelse','Opvarmning: bevægelse 2':'Opvarmning: løb og bevægelse 2','Opvarmning: ketcher og bold':'Boldføling','Hård bevægelse':'Tempobevægelse','Hånd-øje':'Hånd-øje slagopbygning','Slagtræning 1':'Teknik og justering 1','Slagtræning 2':'Teknik og justering 2: specialslag','Slagtræning 3':'Teknik og justering'};
 const blockLabel=n=>{if(n.startsWith('Specialslag:'))return 'Ekstra specialslag: '+(SPECIAL_INFO[n.slice(13)]||{name:n.slice(13)}).name.toLowerCase();const f=/^Familie (\d+)$/.exec(n);if(f)return FAM_TYPES[+f[1]-1];if(stIdx(n))return `Station ${stIdx(n)}: ${stationDef(n).name}`;if(n==='Slagtræning 1'&&+settings.duration===90&&settings.level!=='family')return 'Teknik 1: serv eller retur';if(n==='Pointspil 1'&&+settings.duration===90)return 'Pointspil 1: serv og retur';return settings.level==='family'?n:(BLOCK_LABEL[n]||n)};
@@ -1430,7 +1424,7 @@ function warmFilter(block,p,items,i){
   if(!other||!other.warmType)return p;
   const f=p.filter(x=>x.warmType!==other.warmType);return f.length?f:p;
 }
-const isSlagBlock=b=>b.startsWith('Slagtræning')||b.startsWith('Specialslag:');
+const isSlagBlock=b=>b.startsWith('Slagtræning')||b.startsWith('Specialslag:')||b.startsWith('Kampsituation');
 const SPECIALS=['slice','stopbold','smash','serv','stopflugtning'];
 const SPECIAL_RX={slice:/slice/,smash:/smash|lob/,stopbold:/stopbold|stikbold|kort bold/,serv:/(^|[^a-zæøå])(serv|serven|serve|server|servere)([^a-zæøå]|$)/,stopflugtning:/stopflugtning|stopvolley|stop-volley/};
 const SPECIAL_INFO={
@@ -1442,12 +1436,7 @@ const SPECIAL_INFO={
 };
 let genSpecial;
 function activeSpecial(){return genSpecial!==undefined?genSpecial:(program&&program.special)||null}
-function resolveSpecial(){
-  if(settings.level==='family')return null;
-  const s=settings.special||'auto';if(s==='none')return null;if(s!=='auto')return s;
-  let n=LS.get('tp.specialNext',0);if(!Number.isInteger(n))n=0;LS.set('tp.specialNext',(n+1)%SPECIALS.length);
-  return SPECIALS[n%SPECIALS.length];
-}
+function resolveSpecial(){return null}
 const FEED_LEVEL={beginner:'Træneren står tæt på, 2-4 meter, og kaster med hånden. Når 4 af 6 lykkes, går træneren til nettet og sætter i gang med ketcher.',light:'Træneren sætter i gang ved nettet med ketcher. I sidste del af øvelsen sættes der i gang fra baglinjen.',advanced:'Træneren sætter i gang fra baglinjen med ketcher og ved nettet til volley og smash. Variér tempo, højde og placering.',tournament:'Træneren sætter i gang fra baglinjen med ketcher i kamptempo og med spin. Gå hurtigt over i levende bold.'};
 const FEED_EX={'hånd tæt på':'Træneren står tæt på, 2-4 meter, og kaster med hånden.','ketcher ved net':'Træneren sætter i gang ved nettet med ketcher.','ketcher fra baglinje':'Træneren sætter i gang fra baglinjen med ketcher.','spillerne selv':'Spillerne sætter selv bolden i gang, fx med underhåndsserv.'};
 const FAST_TIPS=['Tidlig forberedelse og kort baglæns sving.','Split-step, når træneren eller modstanderen rammer bolden.','Lavt tyngdepunkt med bøjede knæ.','God højde over nettet giver kontrol.','Straks tilbage til udgangspositionen efter slaget.'];
@@ -1473,7 +1462,6 @@ function slagHtml(block,ex,i){
   return `<dt>Tekniktip</dt><dd>${esc(t.tech)}</dd>
     <dt>Placering og split-step</dt><dd>${esc(t.pos)}</dd>
     ${sp?`<dt>Specialslag: ${SPECIAL_INFO[sp].name}</dt><dd>${esc(SPECIAL_INFO[sp].tip)} ${esc(SPECIAL_INFO[sp].how)}</dd>`:''}
-    <dt>Hurtigt underlag</dt><dd><ul class="tips">${FAST_TIPS.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></dd>
     <dt>${hard?'Aktiv kø og bevægelse mellem slagene':'Aktiv kø'}</dt><dd>${hard?'Bevægelsen er integreret mellem slagene. ':''}Køstation: ${esc(queueTask(i,0))} Efter dine bolde: saml bolde, eller løb rundt om keglen ved baglinjen og tilbage i køen. Højst 3 i kø.</dd>`;
 }
 function slagText(block,ex,i){
@@ -1514,16 +1502,20 @@ function easyHard(ex,feed){
 function variantText(ex){return ex.variants&&ex.variants[settings.level]||''}
 function adaptHtml(block,ex){
   const feed=isFeedBlock(block)&&!NO_BALL.includes(ex.name);
-  let ball;
-  if(NO_BALL.includes(ex.name))ball='Ingen bold nødvendig.';
-  else{const small=ex.court==='små baner';let bl=ex.ball||settings.ball;if(small&&bl!=='foam'&&bl!=='red')bl='red';const ct=ex.court?ex.court.charAt(0).toUpperCase()+ex.court.slice(1):adaptCourt();
-    ball=`${ct} med ${BALL_SHORT[bl]}.`+(small?' Banen laves til små baner, og der spilles kun med rød bold eller skumbold.':' Tilpas gerne bane og bold: kortere bane og langsommere bold giver flere boldudvekslinger. Små baner kun med rød bold eller skumbold.')}
-  let h='';
-  if(feed)h+=`<dt>Igangsætning</dt><dd>${esc(feedText(ex))}</dd><dt>Fodringstempo</dt><dd>${esc(tempoText(ex))}</dd>`;
-  h+=`<dt>Bane og bold</dt><dd>${esc(ball)}</dd>`;
-  if(feed)h+=`<dt>Krav og fokus</dt><dd>${esc((ADAPT[settings.level]||ADAPT.beginner).krav)}. ${esc((ADAPT[settings.level]||ADAPT.beginner).fokus)}</dd>`;
-  return h;
+  return feed?`<dt>Igangsætning</dt><dd>${esc(feedText(ex))}</dd>`:'';
 }
+function visDet(block,ex){
+  if(NO_BALL.includes(ex.name))return '';
+  const st=stationDef(block);
+  if(!(isSlagBlock(block)||block==='Hånd-øje'||(st&&st.trainer)))return '';
+  return strokeBuild(ex).show;
+}
+function followHtml(ex){
+  const [a]=FEED_START[settings.level]||[4];if(a>2)return '';
+  if(!/volley|flugtning|smash|tilnærm|frem til nettet|går frem/.test((ex.name+' '+ex.setup).toLowerCase()))return '';
+  return `<p><b>Følg med frem:</b> fodr en bold ved baglinjen, træd begge frem og fodr en bold mere ved servelinjen, træd længere frem og fodr en bold, som tages som flugtning ved nettet. Gå tilbage, og start forfra.</p>`;
+}
+function howHtml(block,ex){const v=visDet(block,ex);return `${variantText(ex)?`<p><b>På dette niveau:</b> ${esc(variantText(ex))}</p>`:''}${stepsHtml(ex)}${v?`<p><b>Vis det:</b> ${esc(v)}</p>`:''}${followHtml(ex)}`}
 /* ---------- Instruktion, slagopbygning og trænertips ---------- */
 const STOP_DEFAULT='Ketcher på jorden, bolden i hånden, se her.';
 const TRAINER_RULE='Kort besked → tydelig demonstration → hurtigt i gang → én rettelse → ny prøve.';
@@ -1551,7 +1543,7 @@ function strokeBuild(ex){
   if(!(ex.buildUp&&ex.buildUp.length)){const lv=settings.level;if(lv==='advanced')steps=steps.slice(Math.max(0,steps.length-3));if(lv==='tournament')steps=steps.slice(Math.max(0,steps.length-2))}
   return {steps,show:ex.demoPoints||(hit?hit[2]:BUILD_DEFAULT[1])};
 }
-const stopSignal=()=>(settings.stopSignal||'').trim()||STOP_DEFAULT;
+const stopSignal=()=>STOP_DEFAULT;
 function instrHtml(block,ex,isStroke){
   const b=isStroke?strokeBuild(ex):null;
   return `<dt>Sådan starter du øvelsen</dt><dd><p class="rule">${esc(TRAINER_RULE)}</p><ol class="steps">
@@ -1565,7 +1557,7 @@ function easyHardTopHtml(){
   return `<details class="adapt tipsbox"><summary>Gør øvelserne lettere eller sværere</summary>
   <h3>Fodring og slag</h3><p><b>Lettere:</b></p>${listHtml(EASIER_FEED)}<p><b>Sværere:</b></p>${listHtml(HARDER_FEED)}
   <h3>Bevægelse og lege</h3><p><b>Lettere:</b></p>${listHtml(EASIER_MOVE)}<p><b>Sværere:</b></p>${listHtml(HARDER_MOVE)}
-  ${curMode()==='stations'?`<h3>Stationer med forskellige niveauer</h3><p><b>Mere støtte:</b></p>${listHtml(SUPPORT_LIST)}<p><b>Større udfordring:</b></p>${listHtml(CHALLENGE_LIST)}`:''}</details>`;
+  </details>`;
 }
 function orgOverviewHtml(o){
   if(settings.level==='family'||curMode()==='stations')return '';
@@ -1579,10 +1571,20 @@ function orgOverviewHtml(o){
   return items.length?`<section class="team" aria-label="Organisering"><h3>Organisering af kurveøvelser</h3><ul class="tips">${items.join('')}</ul><p>${esc(QUEUE_RULE)}</p>${o.T<o.G?`<p>${esc(SELF_RULE)}</p>`:''}</section>`:'';
 }
 const QUEUE_STATION=['skyggeslag med split-step og recovery til midten.','hurtige fødder over linjerne, ind og ud.','sideskridt mellem to kegler med split-step i midten.','skyggeslag forhånd og baghånd skiftevis med fuld bevægelse.','split-step og første skridt mod en kegle, som makkeren peger på.'];
-function tipsHtml(){return `<details class="adapt tipsbox"><summary>Tips til øvelsesinstruktion</summary><p class="rule">${esc(TRAINER_RULE)}</p>
-  <h3>Sådan starter du hver øvelse</h3><ol class="steps"><li><b>Stop og lyt:</b> »${esc(stopSignal())}« Vent, til alle er klar.</li><li><b>Vis øvelsen:</b> Træneren eller en spiller laver én gennemgang.</li><li><b>Forklar én ting</b> på højst 20-30 sekunder, fx øvelsens formål.</li><li><b>Byg slaget op</b> i teknik og hånd-øje efter slagopbygningen på kortet.</li><li><b>Hurtigt i gang:</b> Ret én ting efter første runde, og lad spillerne prøve igen.</li></ol>
+function tipsHtml(){
+  const strokes=[['Forhånd',7],['Baghånd',6],['Serv',0],['Volley',3],['Smash',2],['Retur',1],['Slice',4],['Stopbold',5]];
+  return `<details class="adapt tipsbox"><summary>Tips til øvelsesinstruktion</summary><p class="rule">${esc(TRAINER_RULE)}</p>
+  <h3>Sådan starter du hver øvelse</h3><ol class="steps"><li><b>Stop og lyt:</b> »${esc(stopSignal())}« Vent, til alle er klar.</li><li><b>Vis øvelsen:</b> Træneren eller en spiller laver én gennemgang. Brug »Vis det« på kortet.</li><li><b>Forklar én ting</b> på højst 20-30 sekunder, fx øvelsens formål.</li><li><b>Byg slaget op</b> efter slagopbygningen nedenfor.</li><li><b>Hurtigt i gang:</b> Ret én ting efter første runde, og lad spillerne prøve igen.</li></ol>
+  <h3>Hånd-øje slagopbygning</h3><p>${esc(HAND_EYE_BUILD[0].join(' → '))}. ${esc(HAND_EYE_BUILD[1])}</p>
+  <h3>Slagopbygning</h3><div class="tbl"><table class="org-t"><thead><tr><th scope="col">Slag</th><th scope="col">Byg op</th><th scope="col">Vis det</th></tr></thead><tbody>${strokes.map(([n,k])=>`<tr><th scope="row">${n}</th><td>${esc(BUILD[k][1].join(' → '))}</td><td>${esc(BUILD[k][2])}</td></tr>`).join('')}</tbody></table></div><p>Gå til næste trin, når det nuværende lykkes nogenlunde stabilt.</p>
+  <h3>Afstand og tempo</h3><ol class="steps">${FEED_STEPS.map((x,k)=>`<li><b>Trin ${k+1}:</b> ${esc(x[0])}, ${esc(x[1])}, ${esc(x[2])}.</li>`).join('')}</ol><p>Gå ét trin videre, når 4 af 6 lykkes, og ét trin tilbage, når det går for stærkt. Ved blandede niveauer kan du stå på forskellige trin for forskellige spillere.</p>
   <h3>Unge spillere (U8 og U10)</h3><p>Har I to trænere, så sæt én træner på hver bane. Har I flere baner end trænere, skal øvelserne på baner uden træner være nemme at udføre for U8 og U10.</p>
   <h3>Tips til at få spillerne til at lytte</h3><ol class="steps">${TIPS.map(x=>`<li><b>${esc(x.t)}</b> ${esc(x.d)}</li>`).join('')}</ol></details>`}
+function fastTopHtml(){return `<details class="adapt tipsbox"><summary>Hurtigt underlag</summary>${listHtml(FAST_TIPS)}</details>`}
+function mixTopHtml(){
+  const types=[['Kampsituationer og teknik ved kurven','Kampsituation 1'],['Boldføling','Opvarmning: ketcher og bold'],['Pointspil og fælles pointspil','Pointspil'],['Bevægelse og stafetter','Hård bevægelse']];
+  return `<details class="adapt tipsbox"><summary>Forskellige niveauer i samme øvelse</summary>${types.map(([t,b])=>{const m=mixInfo(b);return `<h3>${esc(t)}</h3><ul class="tips"><li><b>Mindre stærke:</b> ${esc(m[0])}</li><li><b>Stærkere:</b> ${esc(m[1])}</li><li><b>Sådan sætter du dem sammen:</b> ${esc(m[2])}</li></ul>`}).join('')}${curMode()==='stations'?`<h3>Stationer</h3><ul class="tips"><li><b>Mere støtte:</b> ${esc(SUPPORT_LIST.join(', ').toLowerCase())}.</li><li><b>Større udfordring:</b> ${esc(CHALLENGE_LIST.join(', ').toLowerCase())}.</li></ul>`:''}</details>`;
+}
 const FEED_STEPS=[['2-4 meter fra spilleren på samme side','håndfodring med kast','meget langsomt med høj bue'],['ved nettet på den modsatte side','håndfodring eller rolig ketcherfodring','langsomt og forudsigeligt'],['ved servelinjen på den modsatte side','ketcherfodring','moderat'],['ved den modsatte baglinje','ketcherfodring','moderat til højt og kamprealistisk']];
 const FEED_START={family:[1,1],beginner:[1,3],advanced:[3,4],tournament:[4,4]};
 function feedStepsHtml(ex){
@@ -1705,11 +1707,8 @@ function renderFamily(){
         <dl>
           <dt>Formål</dt><dd>${esc(ex.goal)}</dd>
           <dt>Sådan gør I</dt><dd>${variantText(ex)?`<p><b>På dette niveau:</b> ${esc(variantText(ex))}</p>`:''}${stepsHtml(ex)}</dd>
-          ${famTypeAt(i)===6?buildHtml('Familie',ex):''}
           <dt>Barnets opgave</dt><dd>${esc(fi.child)}</dd>
           <dt>Den voksnes rolle</dt><dd>${esc(fi.adult)}</dd>
-          <dt>Bane og bold</dt><dd>${nob?'Minitennisbane. Ingen bold nødvendig.':'Minitennisbane med '+esc(BALL_SHORT[settings.ball])+'.'}</dd>
-          <dt>Fodringstempo</dt><dd>${esc(ballType&&!nob?tempoText(ex):'Ingen fodring. Hold tempoet legende, og stop, mens børnene stadig er engagerede.')}</dd>
           <dt>Trænerfokus</dt><dd>${esc(ex.coach)}</dd>
           ${ex.variations&&ex.variations.length?`<dt>Variationer</dt><dd>${listHtml(ex.variations)}</dd>`:''}
           <dt>Anbefalet varighed</dt><dd>${esc(fi.dur.label)}</dd>
@@ -1754,12 +1753,9 @@ function stationsSuggested(){return settings.level!=='family'&&settings.players>
 function stationsAvailable(){return settings.level!=='family'&&(stationsSuggested()||settings.spread)}
 function suggestedStations(){const f={half:2,full:1,mini:3}[settings.stationPlace]||2;return Math.max(2,Math.min(12,settings.courts*f))}
 function stationPlan(){
-  const dur=+settings.duration,lv=settings.level,cap10=lv==='beginner'||lv==='advanced';
-  const v=3,warm=dur===90?(lv==='tournament'?10:12):10,e=dur===90&&cap10?5:2,brk=dur===90?8:0,fp0=dur===90?10:5;
-  const mid=dur-v-warm-e-brk-fp0;
+  const fp0=10,mid=60-10-fp0;
   let n=settings.stationCount||suggestedStations();n=Math.min(12,n,Math.max(2,Math.floor(settings.players/2)),Math.floor(mid/5));n=Math.max(2,n,Math.min(12,Math.ceil(settings.players/4)));
-  let t=Math.floor(mid/n);if(cap10)t=Math.min(10,t);
-  return {v,e,brk,fp:fp0+(mid-t*n),n,t};
+  const t=Math.floor(mid/n);return {v:0,e:0,brk:0,fp:fp0+(mid-t*n),n,t};
 }
 const STATION_ORDER=['teknik','rally','bevaegelse','point','teknik','rally','point','bevaegelse','rally','point','bevaegelse','rally'];
 function stationTypesFor(){
@@ -1768,20 +1764,21 @@ function stationTypesFor(){
   const out=[];let tek=0;for(let k=0;k<n;k++){let ty=STATION_ORDER[k];if(ty==='teknik'){if(tek<T)tek++;else ty=k%2?'rally':'point'}out.push(ty)}return out}
 function stTypes(){return genStTypes||(program&&program.stationTypes)||stationTypesFor()}
 const STATION_DEF={
-  teknik:{name:'Teknik med træner',trainer:true,equip:'Kurv eller spand med bolde og kegler til mål',how:'Træneren fodrer og giver individuel feedback med fokus på kontaktpunkt, balance eller bevægelse. Fodringstempoet tilpasses den enkelte spiller.',cats:l=>[...((BLOCK_POOLS[l]||{})['Slagtræning 1']||[]),...((BLOCK_POOLS[l]||{})['Slagtræning 2']||[])]},
+  teknik:{name:'Kampsituation med træner',trainer:true,equip:'Kurv eller spand med bolde og kegler til mål',how:'Træneren fodrer og giver individuel feedback med fokus på kontaktpunkt, balance eller bevægelse. Fodringstempoet tilpasses den enkelte spiller.',cats:l=>[...((BLOCK_POOLS[l]||{})['Slagtræning 1']||[]),...((BLOCK_POOLS[l]||{})['Slagtræning 2']||[])]},
   rally:{name:'Samarbejdsrally',trainer:false,equip:'Bolde og kegler eller tape til en målzone',how:'Spil crosscourt eller gennem en målzone, og sæt en fælles rallyrekord. Brug kortere bane og langsommere bold, hvis det er svært.',cats:l=>({beginner:['Rally','Boldkontrol'],advanced:['Rally & kontrol','Rally'],tournament:['Rally & kontrol','Slagkvalitet']})[l]||['Rally']},
   bevaegelse:{name:'Bevægelse og boldkontrol',trainer:false,equip:'Kegler og bolde',how:'Skyggetennis, keglebane, tap-ups eller kast og grib. Stationen kan gennemføres uden træner.',cats:()=>['Opvarmning: ketcher og bold','Boldkontrol','Hård bevægelse']},
   serve:{name:'Serv og retur',trainer:false,equip:'Bolde og evt. kegler som mål i servefeltet',how:'Én spiller server fra servelinjen, og de andre returnerer fra baglinjen. Skift server efter 4-5 serv.',cats:()=>['Dagens færdighed','Dagens tema']},
   pointshared:{name:'Pointspil (samme på alle baner)',trainer:false,equip:'Bolde og evt. kegler til halv bane',how:'Samme pointspil på alle baner på den halvdel, hvor træneren ikke fodrer. Spillerne styrer selv spillet.',cats:()=>['Pointspil']},
   point:{name:'Pointspil',trainer:false,equip:'Bolde og evt. kegler til halv bane',how:'Halvbane krydsduel, servefeltspil, kongebane eller point med bonus for dagens tema.',cats:()=>['Pointspil']}
 };
-function stationStructure(){const sp=stationPlan();const b=[['Velkomst',sp.v],...warmBlocks(+settings.duration)];const half=Math.ceil(sp.n/2);for(let k=0;k<sp.n;k++){if(sp.brk&&k===half)b.push(['Hård bevægelse',sp.brk]);b.push([`Station ${k+1}`,sp.t])}b.push(['Fælles pointspil',sp.fp],['Evaluering',sp.e]);return b}
+function stationStructure(){const sp=stationPlan();const b=[...warmBlocks(60,'tournament')];for(let k=0;k<sp.n;k++)b.push([`Station ${k+1}`,sp.t]);b.push(['Fælles pointspil',sp.fp]);return b}
 const stIdx=b=>{const m=/^Station (\d+)$/.exec(b);return m?+m[1]:0};
 function stationDef(b){const k=stIdx(b);return k?STATION_DEF[stTypes()[k-1]]||STATION_DEF.rally:null}
 function stationWhere(k){const p=settings.stationPlace;if(p==='full')return `Bane ${k}`;if(p==='mini')return `Bane ${Math.ceil(k/3)}, minibane ${((k-1)%3)+1} (små baner)`;return `Bane ${Math.ceil(k/2)}, ${k%2?'venstre':'højre'} halvdel`}
 function stationGroups(){return splitSizes(stationPlan().n,settings.players).sizes}
 function stationPoolFor(b){
   const def=stationDef(b);
+  if(def===STATION_DEF.teknik){let p=kampPool();if(hasBasket()){const f=p.filter(isBasket);if(f.length)p=f}const c=p.filter(isCombo);if(c.length)p=[...p,...c];return p}
   if(def===STATION_DEF.serve){const sr=srPool().filter(x=>!isBasket(x));if(sr.length)return sr}
   const cats=def.cats(settings.level);let p=[];cats.forEach(c=>levelPool(c).forEach(x=>{if(!p.includes(x))p.push(x)}));
   if(!def.trainer){const f=p.filter(x=>!isBasket(x));if(f.length)p=f}
@@ -1800,9 +1797,7 @@ function stationCardHtml(b,ex,i){
     <dt>Udstyr</dt><dd>${esc(def.equip)}</dd>
     <dt>Kræver træner</dt><dd>${def.trainer?'Ja. Træneren står her og giver individuel feedback.':'Nej. Stationen er selvkørende med enkel opgave, synligt mål og få regler.'}</dd>
     <dt>Igangsætning</dt><dd>${esc(def.trainer?feedText(ex):'Spillerne sætter selv i gang, fx med underhåndsserv eller drop-feed, og kan genstarte uden hjælp.')}</dd>
-    <dt>Fodringstempo</dt><dd>${esc(def.trainer?tempoText(ex)+' Tilpas tempoet til den enkelte spiller.':'Samarbejdstempo, hvor bolden kan holdes i gang.')}</dd>
-    <dt>Bane og bold</dt><dd>${esc(NO_BALL.includes(ex.name)?stationWhere(k)+'. Ingen bold nødvendig.':settings.stationPlace==='mini'?'Små baner med '+((settings.ball==='foam'||settings.ball==='red')?BALL_SHORT[settings.ball]:'rød bold')+'. På små baner kun rød bold eller skumbold.':stationWhere(k)+' med '+BALL_SHORT[settings.ball]+'.')}</dd>
-    <dt>Sådan gør spillerne</dt><dd><p>${esc(def.how)}</p>${variantText(ex)?`<p><b>På dette niveau:</b> ${esc(variantText(ex))}</p>`:''}${stepsHtml(ex)}</dd>
+    <dt>Sådan gør spillerne</dt><dd><p>${esc(def.how)}</p>${howHtml(b,ex)}</dd>
     <dt>Aktiv kø</dt><dd>Mens I venter: ${esc(QUEUE_STATION[(k-1)%QUEUE_STATION.length])}</dd>
     <dt>Rotationsretning</dt><dd>Ved signal: gå til station ${nx} (${esc(stationWhere(nx))}).</dd>`;
 }
@@ -1886,7 +1881,7 @@ function usableIn(id){
 }
 /* ---------- Hold, trænere, kurve og rotation ---------- */
 const CAP={small:6,large:4};
-const BASKET_BLOCKS={family:['Ketcher & bold'],beginner:['Slagtræning 1','Slagtræning 2','Slagtræning 3'],advanced:['Slagtræning 1','Slagtræning 2','Slagtræning 3'],tournament:['Slagtræning 1','Slagtræning 2','Slagtræning 3']};
+const BASKET_BLOCKS={family:['Ketcher & bold'],tournament:['Kampsituation 1','Kampsituation 2','Slagtræning 3']};
 const SIDE_CATS={family:['Spil sammen','Tennislege'],beginner:['Rally','Boldkontrol'],advanced:['Rally & kontrol','Pointspil'],tournament:['Slagkvalitet','Pointspil']};
 const COMMON_CATS=['Velkomst','Hård bevægelse','Opvarmning: bevægelse','Opvarmning: bevægelse 2','Opvarmning: ketcher og bold','Leg & bevægelse','Boldleg','Fælles afslutning','Challenge & afrunding','Afrunding','Evaluering'];
 const PLAY_CATS=['Pointspil','Point under pres','Fælles pointspil','Spillege'];
@@ -2166,7 +2161,7 @@ function updateLive(){
 /* ---------- Rendering ---------- */
 function renderNav(){
   document.querySelectorAll('#nav button').forEach(b=>{if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
-  ['program','library','saved','stats'].forEach(v=>{$('#view-'+v).hidden=v!==view});
+  ['program','library','saved','stats'].forEach(v=>{const el=$('#view-'+v);if(el)el.hidden=v!==view});
   renderNavDot();
 }
 function renderNavDot(){
@@ -2188,7 +2183,6 @@ function renderSettings(){
     <fieldset ${session?'disabled':''}>
       <div class="field" style="margin-bottom:16px"><label for="f-level">Niveau</label>
         <select id="f-level" data-field="level">${LEVELS.map(([v,l])=>`<option value="${v}" ${v===settings.level?'selected':''}>${l}</option>`).join('')}</select></div>
-      <div class="field" style="margin-bottom:16px"><span class="lab">Specialslag</span>${choiceSeg('special',[['auto','Automatisk'],['serv','Serv'],['slice','Slice'],['stopbold','Stopbold'],['stopflugtning','Stopflugtning'],['smash','Smash'],['none','Ingen']],settings.special,()=>settings.level==='family')}${settings.level==='family'?'<p class="lock-note" style="margin-top:6px">Bruges ikke i familietennis.</p>':''}</div>
       <div class="field" style="margin-bottom:16px"><span class="lab">Bold</span>${choiceSeg('ball',BALLS,settings.ball,v=>settings.level==='family'&&v!=='foam'&&v!=='red',v=>`<i class="bd ${v}"></i>`)}</div>
       ${settings.level==='family'?`<p class="note" style="margin:-6px 0 16px">${esc(FAMILY_COURT)}</p>`:'<p class="lock-note" style="margin:-6px 0 16px">Banestørrelsen står på hver øvelse. Små baner kun med rød bold eller skumbold.</p>'}
       <p class="lock-note" style="margin:0">Alle programmer varer 60 minutter. Forlæng eller forkort øvelserne i træningsuret.</p>
@@ -2201,7 +2195,7 @@ function renderSettings(){
       <div class="field" style="margin-bottom:16px"><span class="lab" id="lab-st">Antal stationer${settings.stationCount?'':' (følger banerne)'}</span><div class="stepper" role="group" aria-labelledby="lab-st"><button type="button" data-act="step" data-k="stationCount" data-d="-1" aria-label="Færre stationer">−</button><output>${settings.stationCount||suggestedStations()}</output><button type="button" data-act="step" data-k="stationCount" data-d="1" aria-label="Flere stationer">+</button>${settings.stationCount?'<button type="button" class="btn ghost" style="min-height:40px;font-size:14px" data-act="st-auto">Følg baner</button>':''}</div><p class="lock-note" style="margin-top:6px">Bruges ved stationstræning.</p></div>`:''}
       <div class="field" style="margin-bottom:16px"><span class="lab">Stor niveauspredning</span>${choiceSeg('spread',[['0','Nej'],['1','Ja']],settings.spread?'1':'0',()=>settings.level==='family')}<p class="lock-note" style="margin-top:6px">Ja gør stationstræning til et valg. Ved mere end fire spillere foreslås stationer automatisk.</p></div>
       ${settings.spread&&settings.level!=='family'?`<div class="field" style="margin-bottom:16px"><span class="lab" id="lab-strong">Antal stærkere spillere</span><div class="stepper" role="group" aria-labelledby="lab-strong"><button type="button" data-act="step" data-k="strong" data-d="-1" aria-label="Færre stærkere spillere">−</button><output>${settings.strong}</output><button type="button" data-act="step" data-k="strong" data-d="1" aria-label="Flere stærkere spillere">+</button></div><p class="lock-note" style="margin-top:6px">Resten regnes som mindre stærke. Bruges til gruppeopdeling og tips på kortene.</p></div>`:''}
-      <div class="field"><label for="f-stop">Stop og lyt-signal</label><input id="f-stop" class="search" type="text" maxlength="120" value="${esc(settings.stopSignal)}" placeholder="${esc(STOP_DEFAULT)}"></div>
+
       <p class="lock-note" style="margin-top:12px">Bold og bane foreslås ud fra niveau og alder. Du kan ændre dem bagefter.</p>
     </fieldset>
     ${session?'<p class="lock-note">Indstillingerne er låst, mens træningen kører.</p>':''}
@@ -2256,11 +2250,8 @@ function renderProgram(){
         <dl>
           <dt>Formål</dt><dd>${esc(ex.goal)}</dd>
           ${stIdx(x[0])?stationCardHtml(x[0],ex,i):`${adaptHtml(x[0],ex)}
-          <dt>Sådan gør I</dt><dd>${variantText(ex)?`<p><b>På dette niveau:</b> ${esc(variantText(ex))}</p>`:''}${stepsHtml(ex)}</dd>
+          <dt>Sådan gør I</dt><dd>${howHtml(x[0],ex)}</dd>
           ${slagHtml(x[0],ex,i)}`}
-          ${isSlagBlock(x[0])||x[0]==='Hånd-øje'||(stationDef(x[0])&&stationDef(x[0]).trainer)?buildHtml(x[0],ex):''}
-          ${!NO_BALL.includes(ex.name)&&(isSlagBlock(x[0])||x[0]==='Hånd-øje'||(stationDef(x[0])&&stationDef(x[0]).trainer))?feedStepsHtml(ex):''}
-          ${mixHtml(x[0],ex)}
           ${['Pointspil','Fælles pointspil','Spillege','Spilsituation'].includes(x[0])||isPointN(x[0])||(stationDef(x[0])&&stationDef(x[0])===STATION_DEF.point)?`<dt>Træneren spiller med</dt><dd>Træneren kan spille med i øvelsen for at skabe mere realistiske spilsituationer og et mere flydende spil.</dd>`:''}
           ${x[0]==='Fælles pointspil'?`<dt>Alle er med</dt><dd>Hele holdet spiller sammen til sidst. Brug handicap eller rotation, så alle deltager på lige fod, fx lavere målscore for de mindre stærke.</dd>`:''}
           <dt>Trænerfokus</dt><dd>${esc(ex.coach)}</dd>
@@ -2287,6 +2278,8 @@ function renderProgram(){
       ${summaryHtml(org)}
       ${orgOverviewHtml(org)}
       ${tipsHtml()}
+      ${fastTopHtml()}
+      ${mixTopHtml()}
       ${easyHardTopHtml()}
     </div>
     ${stationBanner(live)}
@@ -2340,14 +2333,21 @@ function renderLibList(){
         ${s&&s.uses?`<p class="stat-line">Brugt ${pl(s.uses,'gang','gange')}.</p>`:''}
       </div></li>`}).join(''):'<li class="item" style="padding:18px 16px">Ingen øvelser matcher søgningen. Prøv et andet ord eller vælg »Alle kategorier«.</li>';
 }
+function deviceHtml(){
+  return `<div class="section"><h2 class="h2">Data på denne enhed</h2>
+    <p class="muted">Gemte programmer og indstillinger ligger kun i denne browser på denne enhed. Med Eksportér data gemmer du en backup, som du kan læse ind igen med Importér data, også på en anden telefon. ${window.TP_PWA?'Når appen er føjet til hjemmeskærmen, virker den også uden net på banen.':'Hent offline-fil giver en kopi af appen, som kan læses uden net.'}</p>
+    <div class="btn-row"><button class="btn ghost" data-act="export-data">Eksportér data</button><button class="btn ghost" data-act="import-data">Importér data</button><input type="file" id="import-file" accept=".json,application/json" hidden>${window.TP_PWA?'':'<button class="btn ghost" data-act="offline" id="offline-btn">Hent offline-fil</button>'}</div>
+    ${pendingImport?`<p class="note" style="margin-top:12px">${esc(importSummary(pendingImport))}</p><div class="btn-row"><button class="btn danger armed" data-act="import-apply">Erstat data</button><button class="btn ghost" data-act="import-cancel">Annullér</button></div>`:''}</div>`;
+}
 function renderSaved(){
   const v=$('#view-saved');
-  if(!saved.length){v.innerHTML=`<h1 class="display" style="margin-bottom:16px">Gemte programmer</h1><div class="empty"><p>Du har ikke gemt nogen programmer endnu. Tryk Gem under en plan, så kan du finde den her og genbruge den næste uge.</p><button class="btn" data-act="goto" data-view="program">Gå til programmet</button></div>`;return}
+  if(!saved.length){v.innerHTML=`<h1 class="display" style="margin-bottom:16px">Gemte programmer</h1><div class="empty"><p>Du har ikke gemt nogen programmer endnu. Tryk Gem under en plan, så kan du finde den her og genbruge den næste uge.</p><button class="btn" data-act="goto" data-view="program">Gå til programmet</button></div>${deviceHtml()}`;if(dlState==='none'){const b=$('#offline-btn');if(b)b.hidden=true}return}
   v.innerHTML=`<h1 class="display" style="margin-bottom:16px">Gemte programmer</h1><ol class="list">${saved.map(s=>{
     const d=new Date(s.date).toLocaleDateString('da-DK',{weekday:'long',day:'numeric',month:'long'});
     const names=s.items.map(id=>INDEX[id]?INDEX[id].name:null).filter(Boolean);
     return `<li class="item"><div class="saved-row"><h3>${esc(s.title)}</h3><div class="saved-meta">Gemt ${esc(d)}${s.uid===program.uid?', åben nu':''}</div><div class="saved-ex">${esc(names.join(', '))}</div></div>
-    <div class="saved-btns"><button class="btn" data-act="open-saved" data-uid="${s.uid}">Åbn</button><button class="btn danger" data-act="del-saved" data-uid="${s.uid}">Slet</button></div></li>`}).join('')}</ol>`;
+    <div class="saved-btns"><button class="btn" data-act="open-saved" data-uid="${s.uid}">Åbn</button><button class="btn danger" data-act="del-saved" data-uid="${s.uid}">Slet</button></div></li>`}).join('')}</ol>${deviceHtml()}`;
+  if(dlState==='none'){const b=$('#offline-btn');if(b)b.hidden=true}
 }
 function renderStats(){
   const v=$('#view-stats');
@@ -2372,7 +2372,7 @@ function renderStats(){
   </div>`;
   if(dlState==='none'){const b=$('#offline-btn');if(b)b.hidden=true}
 }
-function renderAll(){renderNav();renderSettings();renderProgram();if(view==='library')renderLibrary();if(view==='saved')renderSaved();if(view==='stats')renderStats()}
+function renderAll(){renderNav();renderSettings();renderProgram();if(view==='library')renderLibrary();if(view==='saved')renderSaved()}
 
 /* ---------- Offline-fil ---------- */
 let dlState='pending',dlNs=null;
@@ -2482,7 +2482,7 @@ document.addEventListener('click',e=>{
     case 'open-saved':{
       if(session){toast('Afslut træningen, før du åbner et andet program');break}
       const s=saved.find(x=>x.uid===b.dataset.uid);if(!s)break;
-      settings={...settings,...s.settings};if(settings.level==='development'||settings.level==='light')settings.level='advanced';if(!AGES.includes(settings.age))settings.age='U14/16';if(!BALL_CAP[settings.ball])applyDefaults();enforceFamily();
+      settings={...settings,...s.settings};if(settings.level!=='family'&&settings.level!=='tournament'){settings.level='tournament';settings.ball='yellow'}if(!AGES.includes(settings.age))settings.age='U14/16';if(!BALL_CAP[settings.ball])applyDefaults();enforceFamily();
       const items=s.items.filter(id=>INDEX[id]);
       program={uid:s.uid,level:s.level,blocks:Array.isArray(s.blocks)?s.blocks.slice():undefined,special:s.special||null,mode:s.mode||'standard',stationTypes:s.stationTypes||null,famLog:{},items,locks:items.map(()=>false),ratings:(s.ratings||[]).slice(0,items.length),side:(s.side||[]).slice(),counted:true};
       if(!validProgram(program)){toast('Programmet kunne ikke åbnes helt, så der er lavet en ny plan');generate(false)}
@@ -2504,7 +2504,7 @@ document.addEventListener('click',e=>{
     case 'export-data':saveFile('tennisplanlaegger-backup-'+new Date().toISOString().slice(0,10)+'.json',backupJson(),'application/json');break;
     case 'import-data':{const f=$('#import-file');if(f)f.click();break}
     case 'import-apply':applyImport();break;
-    case 'import-cancel':pendingImport=null;renderStats();break;
+    case 'import-cancel':pendingImport=null;renderSaved();break;
     case 'modal-close':$('#modal').hidden=true;break;
     case 'modal-copy':{const t=$('#modal-text');t.focus();t.select();let ok=false;try{ok=document.execCommand('copy')}catch(err){}toast(ok?'Programmet er kopieret':'Markér teksten og kopiér den manuelt');break}
   }
@@ -2516,7 +2516,7 @@ document.addEventListener('change',e=>{
     const rd=new FileReader();
     rd.onload=()=>{let j=null;try{j=JSON.parse(rd.result)}catch(err){}
       if(!j||j.app!=='tennisplanlaegger'||!j.data){toast('Filen er ikke en backup fra tennisplanlæggeren');return}
-      pendingImport=j;renderStats()};
+      pendingImport=j;renderSaved()};
     rd.readAsText(file);return;
   }
   const f=e.target.dataset&&e.target.dataset.field;
@@ -2535,7 +2535,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&session&&!session.pausedAt)requestWake()});
 
 /* ---------- Start ---------- */
-if(!['program','library','saved','stats'].includes(view))view='program';
+if(!['program','library','saved'].includes(view))view=view==='stats'?'saved':'program';
 initSheet();
 if(!validProgram(program))generate(false);
 if(session&&session.uid!==program.uid)session=null;
