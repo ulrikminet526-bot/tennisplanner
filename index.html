@@ -1242,6 +1242,7 @@ settings.baskets=intIn(settings.baskets,0,4,1);
 settings.courts=intIn(settings.courts,1,6,2);
 if(!['auto','slice','smash','stopbold','serv','stopflugtning','none'].includes(settings.special))settings.special='auto';
 settings.spread=settings.spread===true;
+if(!['standard','stations','points'].includes(settings.tourType))settings.tourType='standard';
 if(!['half','full','mini'].includes(settings.stationPlace))settings.stationPlace='half';
 settings.stationCount=Number.isInteger(settings.stationCount)&&settings.stationCount>=2&&settings.stationCount<=12?settings.stationCount:0;
 settings.strong=Number.isInteger(settings.strong)?Math.max(0,Math.min(settings.players||8,settings.strong)):0;
@@ -1727,8 +1728,8 @@ function renderFamily(){
       ${tipsHtml()}
       ${easyHardTopHtml()}
     </div>
+    ${genPanelHtml()}
     <div class="actions">
-      <button class="btn ball wide" data-act="generate">${ICON.dice} Vis 10 familieøvelser</button>
       <button class="btn ghost" data-act="save">Gem</button>
       <button class="btn ghost" data-act="share">Del</button>
     </div>
@@ -1809,7 +1810,17 @@ function stationPlanHtml(){
     <div class="tbl"><table class="org-t"><thead><tr><th scope="col">Station</th><th scope="col">Øvelse</th><th scope="col">Bane</th><th scope="col">Træner</th></tr></thead><tbody>${rows}</tbody></table></div></section>`;
 }
 function typeButtons(){return `<button class="btn ghost" data-act="gen-standard">Generér almindeligt fælles program</button><button class="btn ghost" data-act="gen-stations">Generér stationstræning</button><button class="btn ghost" data-act="gen-points">Generér pointspilstræning</button>`}
-function stationBanner(live){
+function genPanelHtml(){
+  if(session)return '';
+  const rec=stationsSuggested()||settings.spread,t=settings.tourType||'standard';
+  const opts=[['standard','Almindeligt'],['stations','Stationsprogram'+(rec?' (anbefalet)':'')],['points','Pointspilstræning']];
+  return `<div class="station-tip gen-panel" aria-label="Ny træning"><b>Ny træning</b>
+    <div class="btn-row"><button class="btn${settings.level==='family'?' ball':' ghost'}" data-act="gen-family">${ICON.dice} Generér familietennisprogram</button></div>
+    <div class="btn-row" style="margin-top:6px"><button class="btn${settings.level!=='family'?' ball':' ghost'}" data-act="gen-tour">${ICON.dice} Generér turneringsprogram</button></div>
+    <div class="seg" role="group" aria-label="Type af turneringsprogram" style="margin-top:8px">${opts.map(([v,l])=>`<button type="button" data-act="tour-type" data-val="${v}" aria-pressed="${t===v}">${l}</button>`).join('')}</div></div>`;
+}
+function stationBanner(live){return ''}
+function _oldStationBanner(live){
   if(live||settings.level==='family'||!stationsAvailable())return '';
   const mode=curMode(),sug=stationsSuggested();
   const now={standard:'almindeligt fælles program',stations:'stationstræning',points:'pointspilstræning'}[mode]||'almindeligt fælles program';
@@ -2181,20 +2192,17 @@ function renderSettings(){
   </button>
   <div class="settings-body">
     <fieldset ${session?'disabled':''}>
-      <div class="field" style="margin-bottom:16px"><label for="f-level">Niveau</label>
-        <select id="f-level" data-field="level">${LEVELS.map(([v,l])=>`<option value="${v}" ${v===settings.level?'selected':''}>${l}</option>`).join('')}</select></div>
       ${settings.level==='family'?`<p class="note" style="margin:0 0 16px">${esc(FAMILY_COURT)}</p>`:''}
       <h3 class="set-h" style="margin-top:18px">Hold og ressourcer</h3>
       <div class="field" style="margin-bottom:16px"><span class="lab" id="lab-players">Antal spillere</span><div class="stepper" role="group" aria-labelledby="lab-players"><button type="button" data-act="step" data-k="players" data-d="-1" aria-label="Færre spillere" ${settings.players<=1?'disabled':''}>−</button><output aria-live="polite">${settings.players}</output><button type="button" data-act="step" data-k="players" data-d="1" aria-label="Flere spillere" ${settings.players>=20?'disabled':''}>+</button></div></div>
-      <div class="field" style="margin-bottom:16px"><span class="lab">Antal trænere og hjælpetrænere</span>${seg('trainers',[0,1,2,3,4],settings.trainers)}</div>
+      ${settings.level!=='family'?`<div class="field" style="margin-bottom:16px"><span class="lab">Antal trænere og hjælpetrænere</span>${seg('trainers',[0,1,2,3,4],settings.trainers)}</div>
       <div class="field" style="margin-bottom:16px"><span class="lab">Antal kurve</span>${seg('baskets',[0,1,2,3,4],settings.baskets)}</div>
       <div class="field" style="margin-bottom:16px"><span class="lab">Antal baner</span>${seg('courts',[1,2,3,4,5,6],settings.courts)}</div>
-      ${settings.level!=='family'?`<div class="field" style="margin-bottom:16px"><span class="lab">Stationsplacering</span>${choiceSeg('stationPlace',[['half','Halve baner'],['full','Hele baner'],['mini','Små baner']],settings.stationPlace)}</div>
+      <div class="field" style="margin-bottom:16px"><span class="lab">Stationsplacering</span>${choiceSeg('stationPlace',[['half','Halve baner'],['full','Hele baner'],['mini','Små baner']],settings.stationPlace)}</div>
       <div class="field" style="margin-bottom:16px"><span class="lab" id="lab-st">Antal stationer${settings.stationCount?'':' (følger banerne)'}</span><div class="stepper" role="group" aria-labelledby="lab-st"><button type="button" data-act="step" data-k="stationCount" data-d="-1" aria-label="Færre stationer">−</button><output>${settings.stationCount||suggestedStations()}</output><button type="button" data-act="step" data-k="stationCount" data-d="1" aria-label="Flere stationer">+</button>${settings.stationCount?'<button type="button" class="btn ghost" style="min-height:40px;font-size:14px" data-act="st-auto">Følg baner</button>':''}</div><p class="lock-note" style="margin-top:6px">Bruges ved stationstræning.</p></div>`:''}
-      <div class="field" style="margin-bottom:16px"><span class="lab">Stor niveauspredning</span>${choiceSeg('spread',[['0','Nej'],['1','Ja']],settings.spread?'1':'0',()=>settings.level==='family')}<p class="lock-note" style="margin-top:6px">Ja gør stationstræning til et valg. Ved mere end fire spillere foreslås stationer automatisk.</p></div>
+      <div class="field" style="margin-bottom:16px;${settings.level==='family'?'display:none':''}"><span class="lab">Stor niveauspredning</span>${choiceSeg('spread',[['0','Nej'],['1','Ja']],settings.spread?'1':'0',()=>settings.level==='family')}<p class="lock-note" style="margin-top:6px">Ja gør stationstræning til et valg. Ved mere end fire spillere foreslås stationer automatisk.</p></div>
       ${settings.spread&&settings.level!=='family'?`<div class="field" style="margin-bottom:16px"><span class="lab" id="lab-strong">Antal stærkere spillere</span><div class="stepper" role="group" aria-labelledby="lab-strong"><button type="button" data-act="step" data-k="strong" data-d="-1" aria-label="Færre stærkere spillere">−</button><output>${settings.strong}</output><button type="button" data-act="step" data-k="strong" data-d="1" aria-label="Flere stærkere spillere">+</button></div><p class="lock-note" style="margin-top:6px">Resten regnes som mindre stærke. Bruges til gruppeopdeling og tips på kortene.</p></div>`:''}
 
-      <p class="lock-note" style="margin-top:12px">Bold og bane foreslås ud fra niveau og alder. Du kan ændre dem bagefter.</p>
     </fieldset>
     ${session?'<p class="lock-note">Indstillingerne er låst, mens træningen kører.</p>':''}
   </div>`;
@@ -2280,9 +2288,9 @@ function renderProgram(){
       ${easyHardTopHtml()}
     </div>
     ${stationBanner(live)}
+    ${live?'':genPanelHtml()}
     ${live?'':`<div class="actions">
       <button class="btn ball wide" data-act="start">${ICON.play} Start træning</button>
-      ${stationsAvailable()?'':`<button class="btn ghost" data-act="gen-standard">${ICON.dice} Generér komplet program</button><button class="btn ghost" data-act="gen-points">Generér pointspilstræning</button>`}
       <button class="btn ghost" data-act="add-open">Tilføj øvelse</button>
       <button class="btn ghost" data-act="save">Gem</button>
       <button class="btn ghost" data-act="share">Del</button>
@@ -2446,6 +2454,9 @@ document.addEventListener('click',e=>{
     case 'st-auto':settings.stationCount=0;saveAll();if(curMode()==='stations')generate(true);renderSettings();renderProgram();break;
     case 'step':{if(session)break;const k=b.dataset.k;if(k==='stationCount'){settings.stationCount=Math.max(2,Math.min(12,(settings.stationCount||suggestedStations())+(+b.dataset.d)));if(curMode()==='stations')generate(true)}else if(k==='strong'){settings.strong=Math.max(0,Math.min(settings.players,settings.strong+(+b.dataset.d)))}else{settings[k]=Math.max(1,Math.min(20,settings[k]+(+b.dataset.d)));settings.strong=Math.min(settings.strong,settings.players)}saveAll();renderSettings();renderProgram();const nb=document.querySelector(`[data-act="step"][data-k="${k}"][data-d="${b.dataset.d}"]`);if(nb&&!nb.disabled)nb.focus();break}
     case 'swap-side':swapSide(i);break;
+    case 'gen-family':if(session)break;settings.level='family';applyDefaults();genMode=undefined;generate(false);saveAll();renderSettings();renderProgram();toast('Familietennisprogram er klar');window.scrollTo(0,0);break;
+    case 'gen-tour':if(session)break;{const t=settings.tourType||'standard';settings.level='tournament';settings.court='large';genMode=t;generate(false);genMode=undefined;saveAll();renderSettings();renderProgram();toast({standard:'Turneringsprogram er klar',stations:'Stationsprogram er klar',points:'Pointspilstræning er klar'}[t]);window.scrollTo(0,0)}break;
+    case 'tour-type':settings.tourType=b.dataset.val;saveAll();renderProgram();break;
     case 'gen-standard':if(session)break;{const was=curMode();genMode='standard';generate(was==='standard')};genMode=undefined;renderProgram();toast('Fælles program er klar');break;
     case 'gen-points':if(session)break;genMode='points';generate(curMode()==='points');genMode=undefined;renderProgram();toast('Pointspilstræning er klar');window.scrollTo(0,0);break;
     case 'gen-stations':if(session)break;{const was=curMode();genMode='stations';generate(was==='stations')};genMode=undefined;renderProgram();toast('Stationstræning er klar');window.scrollTo(0,0);break;

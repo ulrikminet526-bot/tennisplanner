@@ -1,7 +1,7 @@
 /* Tennisplanlægger: gemmer appen på enheden, så den virker uden net.
    Ret VERSION, når du lægger en ny udgave af appen op, så telefonerne henter den.
    Øvelser fra Google Sheets hentes af appen selv og kræver ikke ny VERSION. */
-const VERSION = 'tennisplanlaegger-v16';
+const VERSION = 'tennisplanlaegger-v17';
 const ASSETS = [
   './',
   './index.html',
