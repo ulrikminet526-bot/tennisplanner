@@ -1277,7 +1277,7 @@ const famTypeAt=i=>FAM_ORDER[i]||i+1;
 let genActive=false;
 const baseStructureFor=l=>{l=l||settings.level;if(l==='family')return FAM_ORDER.map(n=>['Familie '+n,6]);if(!LEVEL_BASE[l])return structures.beginner;if(curMode()==='stations')return stationStructure();if(curMode()==='points')return pointsStructure(l,+settings.duration);return newStructure(l,+settings.duration)};
 const structureFor=l=>{const lv=l||settings.level,b=baseStructureFor(l);if(!genActive&&lv!=='family'&&program&&program.level===lv&&(program.mode||'standard')===curMode()&&Array.isArray(program.extras))program.extras.slice().sort((a,c)=>a.pos-c.pos).forEach(x=>b.splice(Math.min(x.pos,b.length),0,[x.name,x.mins]));return b};
-function target(){return Math.max(1,Math.min(BALL_CAP[settings.ball]||4,LEVEL_BASE[settings.level]||1))}
+function target(){return LEVEL_BASE[settings.level]||1}
 function blockMinutes(){const b=structureFor(),m=settings.level==='family'?minutesFor(b,+settings.duration):b.map(x=>x[1]),adj=(program&&program.adjust)||[];return m.map((x,i)=>Math.max(0,x+(adj[i]||0)))}
 const DONOR_RX=/^(Kampsituation|Slagtræning|Specialslag:|Pointspil \d|Pointspil$|Spilsituation|Spillege|Hånd-øje)/;
 function adjustCurrent(delta){
@@ -1568,7 +1568,7 @@ function orgOverviewHtml(o){
       items.push(`<li><b>${esc(lbl)}:</b> kurv på bane 1${o.B>1?'-'+o.B:''} med ${esc(ex.name)}${x.side?`, ${esc(x.side.name)} på bane ${o.B+1}${o.G>o.B+1?'-'+o.G:''}`:''}. Grupperne kommer til kurven i rækkefølgen ${order.join(' → ')} og skifter, når træneren giver signal.</li>`)}
     else if(x.type==='basketAll')items.push(`<li><b>${esc(lbl)}:</b> træner og kurv på alle baner.</li>`);
   });
-  return items.length?`<section class="team" aria-label="Organisering"><h3>Organisering af kurveøvelser</h3><ul class="tips">${items.join('')}</ul><p>${esc(QUEUE_RULE)}</p>${o.T<o.G?`<p>${esc(SELF_RULE)}</p>`:''}</section>`:'';
+  return items.length?`<h3>Kurveøvelser</h3><ul class="tips">${items.join('')}</ul><p>${esc(QUEUE_RULE)}</p>${o.T<o.G?`<p>${esc(SELF_RULE)}</p>`:''}`:'';
 }
 const QUEUE_STATION=['skyggeslag med split-step og recovery til midten.','hurtige fødder over linjerne, ind og ud.','sideskridt mellem to kegler med split-step i midten.','skyggeslag forhånd og baghånd skiftevis med fuld bevægelse.','split-step og første skridt mod en kegle, som makkeren peger på.'];
 function tipsHtml(){
@@ -1719,7 +1719,7 @@ function renderFamily(){
   $('#program-main').innerHTML=`${bar}
     <div class="p-head">
       <h1 class="display">Familietennis</h1>
-      <p class="p-sub">${dur} minutter, ${BALL_SHORT[settings.ball]}, minitennisbaner${settings.theme!=='none'?', tema: '+esc(settings.theme):''}</p>
+      <p class="p-sub">${dur} minutter, minitennisbaner med skumbold eller rød bold${settings.theme!=='none'?', tema: '+esc(settings.theme):''}</p>
       <ol class="chain" aria-label="Rød tråd">${principles.family.map(p=>`<li>${esc(p)}</li>`).join('')}</ol>
       <section class="team" aria-label="Velkomst"><h3>Samling</h3><ol class="steps"><li>Sæt jer i en rundkreds på gulvet.</li><li>Råb navnene op.</li><li>Fortæl kort, hvad I skal lave i dag.</li></ol></section>
       <blockquote class="guide">Du bestemmer selv rækkefølgen, men start gerne med bevægelse med og uden bold, fx fangelege og stafetter. Vælg aktiviteter efter børnenes energi og interesse. Skift aktivitet, mens børnene stadig er engagerede. Gentag gerne en populær øvelse i en ny variation. Det er ikke nødvendigt at gennemføre alle 10 øvelser.</blockquote>
@@ -1898,7 +1898,7 @@ function fitInfo(e){
   if(e.off)return {ok:false,txt:'Øvelsen er slået fra og kommer ikke med i nye programmer.'};
   if((e.excl||[]).includes(settings.level))return {ok:false,excl:true,txt:`Udelukket for ${levelLabel()}: øvelsen kommer ikke med i planer for det niveau.`};
   if(settings.level!=='family'&&!hasBasket()&&isBasket(e))return {ok:false,txt:'Kurveøvelse: kommer kun med, når der er mindst én træner og én kurv.'};
-  const t=target(),d=e.lvl?Math.abs(e.lvl-t):0,grp=`(${levelLabel()}, ${settings.age}, ${BALL_SHORT[settings.ball]})`;
+  const t=target(),d=e.lvl?Math.abs(e.lvl-t):0,grp=`(${levelLabel()})`;
   return {ok:true,txt:d===0?`Passer godt til målgruppen ${grp} og vælges ofte. Tempo, bane og bold tilpasses niveauet.`:d===1?`Ligger tæt på målgruppen ${grp} og vælges indimellem. Tempo, bane og bold tilpasses niveauet.`:`Ligger langt fra målgruppen ${grp} og vælges sjældent. Tempo, bane og bold tilpasses niveauet.`};
 }
 function clsHtml(e){
@@ -2078,15 +2078,15 @@ function summaryLines(o){
   lines.push(o.anyBasket?'Alle er aktive hele tiden: ved kurven slår man, samler bolde eller laver skyggeslag, og på de andre baner spilles der.':'Alle er aktive hele tiden: alle baner spiller samtidig, og ventende spillere laver fodarbejde eller samler bolde.');
   return {lines,warn};
 }
-function summaryHtml(o){const {lines,warn}=summaryLines(o);return `<section class="team" aria-label="Hold og organisering"><h3>Hold og organisering</h3>${lines.map(l=>`<p>${esc(l)}</p>`).join('')}${warn.map(w=>`<p class="note warn">${esc(w)}</p>`).join('')}</section>`}
+function summaryHtml(o){const {lines,warn}=summaryLines(o);return `<details class="adapt tipsbox" aria-label="Hold og organisering"><summary>Hold og organisering${warn.length?' (se bemærkning)':''}</summary>${lines.map(l=>`<p>${esc(l)}</p>`).join('')}${warn.map(w=>`<p class="note warn">${esc(w)}</p>`).join('')}${orgOverviewHtml(o)}</details>`}
 function roundAt(i,e){const ob=lastOrg&&lastOrg.blocks[i];if(!ob||ob.type!=='rotation')return 0;const em=e/60;const k=ob.rounds.findIndex(r=>em<r.to);return k<0?ob.rounds.length-1:k}
 
-function programTitle(st){st=st||settings;return `${levelLabel(st.level)}, ${st.duration} min`+(st.ball?`, ${BALL_SHORT[st.ball]}`+(courtShort(st)?', '+courtShort(st):''):'')+(st.theme&&st.theme!=='none'?`, tema: ${st.theme}`:'')}
+function programTitle(st){st=st||settings;return `${levelLabel(st.level)}, ${st.duration} min`+(courtShort(st)?', '+courtShort(st):'')}
 function programText(){
   if(settings.level==='family')return familyText();
   const b=structureFor(),m=blockMinutes();let t=0;
   ensureSides();const o=computeOrg();const sl=summaryLines(o);
-  const lines=['Tennistræning: '+programTitle()+(program.special?', specialslag: '+SPECIAL_INFO[program.special].name.toLowerCase():''),settings.level==='family'?FAMILY_COURT:COURT_INFO[settings.court]+' '+BALL_INFO[settings.ball],...sl.lines,...sl.warn,''];
+  const lines=['Tennistræning: '+programTitle()+(program.special?', specialslag: '+SPECIAL_INFO[program.special].name.toLowerCase():''),settings.level==='family'?FAMILY_COURT:'Træneren vælger bold efter niveau, alder og bane: skumbold og rød bold på små baner, orange bold på ¾-bane og grøn eller gul bold på fuld bane.',...sl.lines,...sl.warn,''];
   b.forEach((x,i)=>{const ex=INDEX[program.items[i]];lines.push(`${i+1}. ${blockLabel(x[0])}: ${ex.name}`);lines.push('   '+ex.setup);(stepsOf(ex)||[]).forEach((x,k)=>lines.push(`   ${k+1}. ${x}`));lines.push('   Fokus: '+ex.coach);slagText(x[0],ex,i).forEach(z=>lines.push('   '+z));lines.push('   Organisering: '+orgText(o,i));lines.push('');t+=m[i]});
   return lines.join('\n').trim();
 }
@@ -2183,9 +2183,7 @@ function renderSettings(){
     <fieldset ${session?'disabled':''}>
       <div class="field" style="margin-bottom:16px"><label for="f-level">Niveau</label>
         <select id="f-level" data-field="level">${LEVELS.map(([v,l])=>`<option value="${v}" ${v===settings.level?'selected':''}>${l}</option>`).join('')}</select></div>
-      <div class="field" style="margin-bottom:16px"><span class="lab">Bold</span>${choiceSeg('ball',BALLS,settings.ball,v=>settings.level==='family'&&v!=='foam'&&v!=='red',v=>`<i class="bd ${v}"></i>`)}</div>
-      ${settings.level==='family'?`<p class="note" style="margin:-6px 0 16px">${esc(FAMILY_COURT)}</p>`:'<p class="lock-note" style="margin:-6px 0 16px">Banestørrelsen står på hver øvelse. Små baner kun med rød bold eller skumbold.</p>'}
-      <p class="lock-note" style="margin:0">Alle programmer varer 60 minutter. Forlæng eller forkort øvelserne i træningsuret.</p>
+      ${settings.level==='family'?`<p class="note" style="margin:0 0 16px">${esc(FAMILY_COURT)}</p>`:''}
       <h3 class="set-h" style="margin-top:18px">Hold og ressourcer</h3>
       <div class="field" style="margin-bottom:16px"><span class="lab" id="lab-players">Antal spillere</span><div class="stepper" role="group" aria-labelledby="lab-players"><button type="button" data-act="step" data-k="players" data-d="-1" aria-label="Færre spillere" ${settings.players<=1?'disabled':''}>−</button><output aria-live="polite">${settings.players}</output><button type="button" data-act="step" data-k="players" data-d="1" aria-label="Flere spillere" ${settings.players>=20?'disabled':''}>+</button></div></div>
       <div class="field" style="margin-bottom:16px"><span class="lab">Antal trænere og hjælpetrænere</span>${seg('trainers',[0,1,2,3,4],settings.trainers)}</div>
@@ -2267,16 +2265,15 @@ function renderProgram(){
     ${liveHtml}
     <div class="p-head">
       <h1 class="display">${esc(levelLabel())}</h1>
-      <p class="p-sub">${settings.duration} minutter, ${BALL_SHORT[settings.ball]}${courtShort(settings)?', '+courtShort(settings):''}${settings.theme!=='none'?', tema: '+esc(settings.theme):''}${program.special?', specialslag: '+SPECIAL_INFO[program.special].name.toLowerCase():''}</p>
+      <p class="p-sub">${settings.duration} minutter${courtShort(settings)?', '+courtShort(settings):''}${settings.theme!=='none'?', tema: '+esc(settings.theme):''}${program.special?', specialslag: '+SPECIAL_INFO[program.special].name.toLowerCase():''}</p>
       <ol class="chain" aria-label="Træningsprincip">${principles[settings.level].map(p=>`<li>${esc(p)}</li>`).join('')}</ol>
       <details class="adapt"><summary>Bane, bold og tilpasning</summary>
         <h3>Bane</h3><p>${esc(settings.level==='family'?FAMILY_COURT:'Banestørrelsen står på hver øvelse og følger niveauet. Kortere bane og langsommere bold giver flere boldudvekslinger. Skal en bane laves til små baner, står det på kortet, og så bruges kun rød bold eller skumbold.')}</p>
-        <h3>Bold</h3><p>${esc(BALL_INFO[settings.ball])}</p>
+        <h3>Bold</h3><p>${esc(settings.level==='family'?'Skumbold eller rød bold på minitennisbaner.':'Træneren vælger bold efter niveau, alder og bane: skumbold og rød bold på små baner, orange bold på ¾-bane og grøn eller gul bold på fuld bane.')}</p>
         ${comboWarning()?`<p class="note warn">${esc(comboWarning())}</p>`:''}
         <h3>Niveau</h3><p>${esc(ageAdjustment())}</p></details>
       ${curMode()==='stations'?stationPlanHtml():''}
       ${summaryHtml(org)}
-      ${orgOverviewHtml(org)}
       ${tipsHtml()}
       ${fastTopHtml()}
       ${mixTopHtml()}
